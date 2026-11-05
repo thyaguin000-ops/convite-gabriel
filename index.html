@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luciana 18 Anos</title>
+
+<style>
+body{
+margin:0;
+padding:0;
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#2d0057,#6a00ff,#a855f7);
+color:white;
+text-align:center;
+min-height:100vh;
+}
+
+.card{
+max-width:420px;
+margin:40px auto;
+padding:25px;
+background:rgba(255,255,255,0.10);
+border-radius:20px;
+box-shadow:0 0 20px rgba(255,255,255,0.08);
+}
+
+input{
+width:90%;
+padding:12px;
+border:none;
+border-radius:10px;
+font-size:16px;
+margin-top:15px;
+outline:none;
+}
+
+button{
+margin-top:15px;
+padding:12px 25px;
+border:none;
+border-radius:10px;
+font-size:16px;
+font-weight:bold;
+background:white;
+color:#6a00ff;
+cursor:pointer;
+}
+
+ul{
+list-style:none;
+padding:0;
+margin-top:15px;
+}
+
+li{
+margin:8px 0;
+padding:10px;
+background:rgba(255,255,255,0.15);
+border-radius:10px;
+}
+
+.aviso{
+font-size:13px;
+opacity:0.7;
+margin-top:5px;
+}
+
+.rodape{
+position:fixed;
+bottom:10px;
+left:0;
+width:100%;
+text-align:center;
+font-size:14px;
+color:rgba(255,255,255,0.55);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>💜 Luciana 💜</h1>
+<h2>18 Anos</h2>
+
+<p>Tema: Euphoria ✨</p>
+<p>📅 02 de Maio</p>
+<p>🕘 21:00</p>
+<p>📍 Rua Rodrigues Alves, Bairro Açaízal</p>
+
+<input type="text" id="nome" placeholder="Digite seu nome">
+
+<div class="aviso">⚠ Apenas 1º nome</div>
+
+<br>
+
+<button onclick="confirmar()">Confirmar Presença</button>
+
+<h3>Lista de Confirmados</h3>
+<ul id="lista"></ul>
+
+</div>
+
+<div class="rodape">
+Feito por Thyago Santos
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+onSnapshot,
+getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyAYAYRIVProbKyHQzIMDSHRkpQL1AtXJkQ",
+authDomain: "convite-eb192.firebaseapp.com",
+projectId: "convite-eb192",
+storageBucket: "convite-eb192.firebasestorage.app",
+messagingSenderId: "1054003508417",
+appId: "1:1054003508417:web:8c1bce3704adcd6b89d040"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+function pegarPrimeiroNome(nome){
+return nome.trim().split(" ")[0];
+}
+
+window.confirmar = async function(){
+
+let nomeCompleto = document.getElementById("nome").value;
+
+if(nomeCompleto.trim() == ""){
+alert("Digite seu nome");
+return;
+}
+
+let nome = pegarPrimeiroNome(nomeCompleto);
+let nomeVerificar = nome.toLowerCase();
+
+const querySnapshot = await getDocs(collection(db,"confirmados"));
+
+let repetido = false;
+
+querySnapshot.forEach((item)=>{
+if(item.data().nome.toLowerCase() === nomeVerificar){
+repetido = true;
+}
+});
+
+if(repetido){
+alert("Esse nome já confirmou presença.");
+return;
+}
+
+await addDoc(collection(db,"confirmados"),{
+nome:nome
+});
+
+document.getElementById("nome").value = "";
+
+}
+
+onSnapshot(collection(db,"confirmados"),(snapshot)=>{
+
+let lista = document.getElementById("lista");
+lista.innerHTML = "";
+
+snapshot.forEach((item)=>{
+lista.innerHTML += "<li>"+item.data().nome+"</li>";
+});
+
+});
+
+</script>
+
+</body>
+</html>
