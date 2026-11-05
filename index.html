@@ -1,79 +1,117 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Luciana 18 Anos</title>
+<title>Gabriel 18 Anos</title>
 
 <style>
-body{
-margin:0;
-padding:0;
-font-family:Arial, Helvetica, sans-serif;
-background:linear-gradient(135deg,#2d0057,#6a00ff,#a855f7);
-color:white;
-text-align:center;
-min-height:100vh;
+* {
+    box-sizing: border-box;
 }
 
-.card{
-max-width:420px;
-margin:40px auto;
-padding:25px;
-background:rgba(255,255,255,0.10);
-border-radius:20px;
-box-shadow:0 0 20px rgba(255,255,255,0.08);
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #020308, #071b3d, #003b70);
+    color: white;
+    text-align: center;
+    min-height: 100vh;
 }
 
-input{
-width:90%;
-padding:12px;
-border:none;
-border-radius:10px;
-font-size:16px;
-margin-top:15px;
-outline:none;
+.card {
+    max-width: 420px;
+    margin: 40px auto;
+    padding: 28px 22px;
+    background: rgba(10, 20, 40, 0.78);
+    border: 1px solid rgba(0, 140, 255, 0.35);
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0, 110, 255, 0.25);
 }
 
-button{
-margin-top:15px;
-padding:12px 25px;
-border:none;
-border-radius:10px;
-font-size:16px;
-font-weight:bold;
-background:white;
-color:#6a00ff;
-cursor:pointer;
+h1 {
+    color: #39a9ff;
+    font-size: 36px;
+    text-shadow: 0 0 15px #007bff;
 }
 
-ul{
-list-style:none;
-padding:0;
-margin-top:15px;
+h2 {
+    color: #d8eaff;
 }
 
-li{
-margin:8px 0;
-padding:10px;
-background:rgba(255,255,255,0.15);
-border-radius:10px;
+h3 {
+    color: #39a9ff;
+    margin-top: 28px;
 }
 
-.aviso{
-font-size:13px;
-opacity:0.7;
-margin-top:5px;
+p {
+    line-height: 1.6;
 }
 
-.rodape{
-position:fixed;
-bottom:10px;
-left:0;
-width:100%;
-text-align:center;
-font-size:14px;
-color:rgba(255,255,255,0.55);
+.destaque {
+    color: #54b7ff;
+    font-weight: bold;
+}
+
+input {
+    width: 90%;
+    padding: 12px;
+    border: 1px solid #168cff;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-top: 15px;
+    outline: none;
+    background: #101b2d;
+    color: white;
+}
+
+input::placeholder {
+    color: #aabbd0;
+}
+
+button {
+    margin-top: 15px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    background: #168cff;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #006bd6;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+li {
+    margin: 8px 0;
+    padding: 10px;
+    background: rgba(0, 120, 255, 0.15);
+    border: 1px solid rgba(0, 140, 255, 0.2);
+    border-radius: 10px;
+}
+
+.aviso {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-top: 8px;
+}
+
+.rodape {
+    margin: 35px auto 10px;
+    text-align: center;
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
 }
 </style>
 </head>
@@ -82,17 +120,18 @@ color:rgba(255,255,255,0.55);
 
 <div class="card">
 
-<h1>💜 Luciana 💜</h1>
+<h1> Gabriel </h1>
 <h2>18 Anos</h2>
 
-<p>Tema: Euphoria ✨</p>
-<p>📅 02 de Maio</p>
-<p>🕘 21:00</p>
-<p>📍 Rua Rodrigues Alves, Bairro Açaízal</p>
+<p class="destaque">Uma noite, uma festa e muitas histórias!</p>
 
-<input type="text" id="nome" placeholder="Digite seu nome">
+<p>🖤 Tema: Noite Azul e Preta</p>
+<p>📅 21 de Novembro de 2026</p>
+<p>🕖 19:00</p>
 
-<div class="aviso">⚠ Apenas 1º nome</div>
+<input type="text" id="nome" placeholder="Digite seu primeiro nome">
+
+<div class="aviso">⚠ Apenas o primeiro nome</div>
 
 <br>
 
@@ -109,7 +148,9 @@ Feito por Thyago Santos
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
 getFirestore,
@@ -125,60 +166,73 @@ authDomain: "convite-eb192.firebaseapp.com",
 projectId: "convite-eb192",
 storageBucket: "convite-eb192.firebasestorage.app",
 messagingSenderId: "1054003508417",
-appId: "1:1054003508417:web:8c1bce3704adcd6b89d040"
+appId: "1:4003508417:web:8c1bce3704adcd6b89d040"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-function pegarPrimeiroNome(nome){
-return nome.trim().split(" ")[0];
+const confirmados = collection(db, "confirmados");
+
+function pegarPrimeiroNome(nome) {
+    return nome.trim().split(/\s+/)[0];
 }
 
-window.confirmar = async function(){
+window.confirmar = async function() {
 
-let nomeCompleto = document.getElementById("nome").value;
+    const campo = document.getElementById("nome");
+    const nomeCompleto = campo.value;
 
-if(nomeCompleto.trim() == ""){
-alert("Digite seu nome");
-return;
-}
+    if (nomeCompleto.trim() === "") {
+        alert("Digite seu nome");
+        return;
+    }
 
-let nome = pegarPrimeiroNome(nomeCompleto);
-let nomeVerificar = nome.toLowerCase();
+    const nome = pegarPrimeiroNome(nomeCompleto);
+    const nomeVerificar = nome.toLowerCase();
 
-const querySnapshot = await getDocs(collection(db,"confirmados"));
+    try {
+        const querySnapshot = await getDocs(confirmados);
 
-let repetido = false;
+        let repetido = false;
 
-querySnapshot.forEach((item)=>{
-if(item.data().nome.toLowerCase() === nomeVerificar){
-repetido = true;
-}
-});
+        querySnapshot.forEach((item) => {
+            if (item.data().nome.toLowerCase() === nomeVerificar) {
+                repetido = true;
+            }
+        });
 
-if(repetido){
-alert("Esse nome já confirmou presença.");
-return;
-}
+        if (repetido) {
+            alert("Esse nome já confirmou presença.");
+            return;
+        }
 
-await addDoc(collection(db,"confirmados"),{
-nome:nome
-});
+        await addDoc(confirmados, {
+            nome: nome
+        });
 
-document.getElementById("nome").value = "";
+        campo.value = "";
+        alert("Presença confirmada!");
 
-}
+    } catch (erro) {
+        alert("Não foi possível confirmar. Tente novamente.");
+        console.error(erro);
+    }
+};
 
-onSnapshot(collection(db,"confirmados"),(snapshot)=>{
+onSnapshot(confirmados, (snapshot) => {
 
-let lista = document.getElementById("lista");
-lista.innerHTML = "";
+    const lista = document.getElementById("lista");
+    lista.innerHTML = "";
 
-snapshot.forEach((item)=>{
-lista.innerHTML += "<li>"+item.data().nome+"</li>";
-});
+    snapshot.forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item.data().nome;
+        lista.appendChild(li);
+    });
 
+}, (erro) => {
+    console.error("Erro ao carregar a lista:", erro);
 });
 
 </script>
