@@ -87,15 +87,7 @@ li {
   padding: 12px;
   background: rgba(30,130,220,0.18);
   border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.info-nome {
   text-align: left;
-  min-width: 0;
 }
 
 .nome-lista {
@@ -109,15 +101,6 @@ li {
   font-size: 11px;
   opacity: 0.7;
   margin-top: 5px;
-}
-
-.botao-remover {
-  width: auto;
-  margin: 0;
-  padding: 8px 12px;
-  background: #c62828;
-  font-size: 13px;
-  flex-shrink: 0;
 }
 
 .rodape {
@@ -172,7 +155,6 @@ import {
   onSnapshot,
   doc,
   runTransaction,
-  deleteDoc,
   serverTimestamp
 } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -253,28 +235,6 @@ window.confirmar = async function() {
 
 };
 
-window.remover = async function(id) {
-
-  const mensagem = document.getElementById("mensagem");
-
-  if (!confirm("Tem certeza que deseja remover este nome?")) {
-    return;
-  }
-
-  try {
-
-    await deleteDoc(doc(confirmados, id));
-    mensagem.textContent = "Nome removido com sucesso!";
-
-  } catch (erro) {
-
-    console.error("Erro ao remover:", erro);
-    mensagem.textContent = "Erro ao remover: " + (erro.code || erro.message);
-
-  }
-
-};
-
 onSnapshot(confirmados, (snapshot) => {
 
   const lista = document.getElementById("lista");
@@ -285,9 +245,6 @@ onSnapshot(confirmados, (snapshot) => {
     const dados = item.data();
 
     const li = document.createElement("li");
-
-    const info = document.createElement("div");
-    info.className = "info-nome";
 
     const nome = document.createElement("span");
     nome.className = "nome-lista";
@@ -311,16 +268,8 @@ onSnapshot(confirmados, (snapshot) => {
       horario.textContent = "Confirmação anterior";
     }
 
-    info.appendChild(nome);
-    info.appendChild(horario);
-
-    const botaoRemover = document.createElement("button");
-    botaoRemover.className = "botao-remover";
-    botaoRemover.textContent = "Remover";
-    botaoRemover.onclick = () => window.remover(item.id);
-
-    li.appendChild(info);
-    li.appendChild(botaoRemover);
+    li.appendChild(nome);
+    li.appendChild(horario);
 
     lista.appendChild(li);
 
