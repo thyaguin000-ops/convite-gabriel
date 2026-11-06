@@ -7,15 +7,13 @@
 <title>Gabriel 19 Anos</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
   padding: 20px;
   min-height: 100vh;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #020817, #061a33, #07518a);
   color: white;
   text-align: center;
@@ -34,21 +32,9 @@ body {
   box-shadow: 0 10px 35px rgba(0,0,0,0.4);
 }
 
-h1 {
-  font-size: 34px;
-  margin-bottom: 5px;
-}
-
-h2 {
-  font-size: 23px;
-  font-weight: normal;
-  margin-top: 5px;
-}
-
-p {
-  font-size: 17px;
-  margin: 14px 0;
-}
+h1 { font-size: 34px; margin-bottom: 5px; }
+h2 { font-size: 23px; font-weight: normal; margin-top: 5px; }
+p { font-size: 17px; margin: 14px 0; }
 
 input {
   width: 100%;
@@ -82,6 +68,12 @@ button:disabled {
   font-size: 13px;
   opacity: 0.7;
   margin-top: 8px;
+}
+
+#mensagem {
+  font-size: 14px;
+  margin-top: 12px;
+  overflow-wrap: anywhere;
 }
 
 ul {
@@ -129,12 +121,12 @@ li {
   Confirmar presença
 </button>
 
+<div id="mensagem"></div>
+
 <h3>Lista de confirmados</h3>
 <ul id="lista"></ul>
 
-<div class="rodape">
-Feito por Thyago Santos
-</div>
+<div class="rodape">Feito por Thyago Santos</div>
 
 </div>
 
@@ -146,9 +138,9 @@ import { initializeApp } from
 import {
   getFirestore,
   collection,
-  addDoc,
   onSnapshot,
-  getDocs
+  doc,
+  runTransaction
 } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -158,13 +150,12 @@ const firebaseConfig = {
   projectId: "convite-eb192",
   storageBucket: "convite-eb192.firebasestorage.app",
   messagingSenderId: "1054003508417",
-  appId: "1:1054003508417:web:8c1bce3704adcd6b89d040"
+  appId: "1:4004003508417:web:8c1bce3704adcd6b89d040"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Lista exclusiva do Gabriel
 const confirmados = collection(db, "confirmados_gabriel");
 
 function normalizarNome(nome) {
@@ -178,39 +169,51 @@ window.confirmar = async function() {
 
   const campo = document.getElementById("nome");
   const botao = document.getElementById("botao");
+  const mensagem = document.getElementById("mensagem");
 
   const nome = campo.value.trim().split(/\s+/)[0];
 
   if (!nome) {
-    alert("Digite seu nome.");
+    mensagem.textContent = "Digite seu nome.";
     return;
   }
 
   botao.disabled = true;
+  mensagem.textContent = "Confirmando presença...";
 
   try {
 
-    const snapshot = await getDocs(confirmados);
+    const id = encodeURIComponent(normalizarNome(nome));
+    const referencia = doc(confirmados, id);
 
-    const repetido = snapshot.docs.some(item =>
-      normalizarNome(item.data().nome) === normalizarNome(nome)
-    );
+    await runTransaction(db, async (transacao) => {
 
-    if (repetido) {
-      alert("Esse nome já confirmou presença!");
-      return;
-    }
+      const existente = await transacao.get(referencia);
 
-    await addDoc(confirmados, {
-      nome: nome
+      if (existente.exists()) {
+        throw new Error("NOME_REPETIDO");
+      }
+
+      transacao.set(referencia, {
+        nome: nome
+      });
+
     });
 
     campo.value = "";
-    alert("Presença confirmada com sucesso!");
+    mensagem.textContent = "Presença confirmada com sucesso!";
 
   } catch (erro) {
-    console.error(erro);
-    alert("Não foi possível confirmar. Tente novamente.");
+
+    console.error("Erro Firebase:", erro);
+
+    if (erro.message === "NOME_REPETIDO") {
+      mensagem.textContent = "Esse nome já confirmou presença!";
+    } else {
+      mensagem.textContent =
+        "Erro: " + (erro.code || erro.message);
+    }
+
   } finally {
     botao.disabled = false;
   }
@@ -227,6 +230,13 @@ onSnapshot(confirmados, (snapshot) => {
     li.textContent = item.data().nome;
     lista.appendChild(li);
   });
+
+}, (erro) => {
+
+  console.error("Erro ao carregar lista:", erro);
+
+  document.getElementById("mensagem").textContent =
+    "Erro ao carregar lista: " + (erro.code || erro.message);
 
 });
 
