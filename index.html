@@ -87,6 +87,24 @@ li {
   padding: 10px;
   background: rgba(30,130,220,0.18);
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.nome-lista {
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+.botao-remover {
+  width: auto;
+  margin: 0;
+  padding: 8px 12px;
+  background: #c62828;
+  font-size: 13px;
+  flex-shrink: 0;
 }
 
 .rodape {
@@ -140,7 +158,8 @@ import {
   collection,
   onSnapshot,
   doc,
-  runTransaction
+  runTransaction,
+  deleteDoc
 } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -194,9 +213,7 @@ window.confirmar = async function() {
         throw new Error("NOME_REPETIDO");
       }
 
-      transacao.set(referencia, {
-        nome: nome
-      });
+      transacao.set(referencia, { nome: nome });
 
     });
 
@@ -210,12 +227,33 @@ window.confirmar = async function() {
     if (erro.message === "NOME_REPETIDO") {
       mensagem.textContent = "Esse nome já confirmou presença!";
     } else {
-      mensagem.textContent =
-        "Erro: " + (erro.code || erro.message);
+      mensagem.textContent = "Erro: " + (erro.code || erro.message);
     }
 
   } finally {
     botao.disabled = false;
+  }
+
+};
+
+window.remover = async function(id) {
+
+  const mensagem = document.getElementById("mensagem");
+
+  if (!confirm("Tem certeza que deseja remover este nome?")) {
+    return;
+  }
+
+  try {
+
+    await deleteDoc(doc(confirmados, id));
+    mensagem.textContent = "Nome removido com sucesso!";
+
+  } catch (erro) {
+
+    console.error("Erro ao remover:", erro);
+    mensagem.textContent = "Erro ao remover: " + (erro.code || erro.message);
+
   }
 
 };
@@ -226,9 +264,23 @@ onSnapshot(confirmados, (snapshot) => {
   lista.innerHTML = "";
 
   snapshot.forEach((item) => {
+
     const li = document.createElement("li");
-    li.textContent = item.data().nome;
+
+    const nome = document.createElement("span");
+    nome.className = "nome-lista";
+    nome.textContent = item.data().nome;
+
+    const remover = document.createElement("button");
+    remover.className = "botao-remover";
+    remover.textContent = "Remover";
+    remover.onclick = () => window.remover(item.id);
+
+    li.appendChild(nome);
+    li.appendChild(remover);
+
     lista.appendChild(li);
+
   });
 
 }, (erro) => {
@@ -243,4 +295,5 @@ onSnapshot(confirmados, (snapshot) => {
 </script>
 
 </body>
-</html>
+  </html>
+  
