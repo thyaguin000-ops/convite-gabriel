@@ -4,114 +4,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gabriel 18 Anos</title>
+<title>Gabriel 19 Anos</title>
 
 <style>
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    padding: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(135deg, #020308, #071b3d, #003b70);
-    color: white;
-    text-align: center;
-    min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #020817, #061a33, #07518a);
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .card {
-    max-width: 420px;
-    margin: 40px auto;
-    padding: 28px 22px;
-    background: rgba(10, 20, 40, 0.78);
-    border: 1px solid rgba(0, 140, 255, 0.35);
-    border-radius: 20px;
-    box-shadow: 0 0 25px rgba(0, 110, 255, 0.25);
+  width: 100%;
+  max-width: 420px;
+  padding: 30px 22px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(100,180,255,0.25);
+  border-radius: 20px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.4);
 }
 
 h1 {
-    color: #39a9ff;
-    font-size: 36px;
-    text-shadow: 0 0 15px #007bff;
+  font-size: 34px;
+  margin-bottom: 5px;
 }
 
 h2 {
-    color: #d8eaff;
-}
-
-h3 {
-    color: #39a9ff;
-    margin-top: 28px;
+  font-size: 23px;
+  font-weight: normal;
+  margin-top: 5px;
 }
 
 p {
-    line-height: 1.6;
-}
-
-.destaque {
-    color: #54b7ff;
-    font-weight: bold;
+  font-size: 17px;
+  margin: 14px 0;
 }
 
 input {
-    width: 90%;
-    padding: 12px;
-    border: 1px solid #168cff;
-    border-radius: 10px;
-    font-size: 16px;
-    margin-top: 15px;
-    outline: none;
-    background: #101b2d;
-    color: white;
-}
-
-input::placeholder {
-    color: #aabbd0;
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  margin-top: 20px;
+  outline: none;
 }
 
 button {
-    margin-top: 15px;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    background: #168cff;
-    color: white;
-    cursor: pointer;
+  margin-top: 15px;
+  padding: 13px 22px;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #1688e8;
+  color: white;
+  cursor: pointer;
 }
 
-button:hover {
-    background: #006bd6;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-    margin-top: 15px;
-}
-
-li {
-    margin: 8px 0;
-    padding: 10px;
-    background: rgba(0, 120, 255, 0.15);
-    border: 1px solid rgba(0, 140, 255, 0.2);
-    border-radius: 10px;
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .aviso {
-    font-size: 13px;
-    opacity: 0.7;
-    margin-top: 8px;
+  font-size: 13px;
+  opacity: 0.7;
+  margin-top: 8px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+li {
+  margin: 8px 0;
+  padding: 10px;
+  background: rgba(30,130,220,0.18);
+  border-radius: 10px;
 }
 
 .rodape {
-    margin: 35px auto 10px;
-    text-align: center;
-    font-size: 14px;
-    color: rgba(255,255,255,0.55);
+  margin-top: 25px;
+  font-size: 13px;
+  opacity: 0.55;
 }
 </style>
 </head>
@@ -120,119 +109,125 @@ li {
 
 <div class="card">
 
-<h1> Gabriel </h1>
-<h2>18 Anos</h2>
+<h1>Gabriel</h1>
+<h2>19 anos</h2>
 
-<p class="destaque">Uma noite, uma festa e muitas histórias!</p>
-
-<p>🖤 Tema: Noite Azul e Preta</p>
-<p>📅 21 de Novembro de 2026</p>
+<p>Você está convidado!</p>
+<p>📅 21 de novembro de 2026</p>
 <p>🕖 19:00</p>
 
-<input type="text" id="nome" placeholder="Digite seu primeiro nome">
+<input
+  type="text"
+  id="nome"
+  placeholder="Digite seu primeiro nome"
+  maxlength="30"
+>
 
-<div class="aviso">⚠ Apenas o primeiro nome</div>
+<div class="aviso">Digite apenas seu primeiro nome.</div>
 
-<br>
+<button id="botao" onclick="confirmar()">
+  Confirmar presença
+</button>
 
-<button onclick="confirmar()">Confirmar Presença</button>
-
-<h3>Lista de Confirmados</h3>
+<h3>Lista de confirmados</h3>
 <ul id="lista"></ul>
-
-</div>
 
 <div class="rodape">
 Feito por Thyago Santos
 </div>
 
+</div>
+
 <script type="module">
 
-import {
-initializeApp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp } from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-getFirestore,
-collection,
-addDoc,
-onSnapshot,
-getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  getFirestore,
+  collection,
+  addDoc,
+  onSnapshot,
+  getDocs
+} from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-apiKey: "AIzaSyAYAYRIVProbKyHQzIMDSHRkpQL1AtXJkQ",
-authDomain: "convite-eb192.firebaseapp.com",
-projectId: "convite-eb192",
-storageBucket: "convite-eb192.firebasestorage.app",
-messagingSenderId: "1054003508417",
-appId: "1:4003508417:web:8c1bce3704adcd6b89d040"
+  apiKey: "AIzaSyAYAYRIVProbKyHQzIMDSHRkpQL1AtXJkQ",
+  authDomain: "convite-eb192.firebaseapp.com",
+  projectId: "convite-eb192",
+  storageBucket: "convite-eb192.firebasestorage.app",
+  messagingSenderId: "1054003508417",
+  appId: "1:1054003508417:web:8c1bce3704adcd6b89d040"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const confirmados = collection(db, "confirmados");
+// Lista exclusiva do Gabriel
+const confirmados = collection(db, "confirmados_gabriel");
 
-function pegarPrimeiroNome(nome) {
-    return nome.trim().split(/\s+/)[0];
+function normalizarNome(nome) {
+  return nome.trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
 }
 
 window.confirmar = async function() {
 
-    const campo = document.getElementById("nome");
-    const nomeCompleto = campo.value;
+  const campo = document.getElementById("nome");
+  const botao = document.getElementById("botao");
 
-    if (nomeCompleto.trim() === "") {
-        alert("Digite seu nome");
-        return;
+  const nome = campo.value.trim().split(/\s+/)[0];
+
+  if (!nome) {
+    alert("Digite seu nome.");
+    return;
+  }
+
+  botao.disabled = true;
+
+  try {
+
+    const snapshot = await getDocs(confirmados);
+
+    const repetido = snapshot.docs.some(item =>
+      normalizarNome(item.data().nome) === normalizarNome(nome)
+    );
+
+    if (repetido) {
+      alert("Esse nome já confirmou presença!");
+      return;
     }
 
-    const nome = pegarPrimeiroNome(nomeCompleto);
-    const nomeVerificar = nome.toLowerCase();
+    await addDoc(confirmados, {
+      nome: nome
+    });
 
-    try {
-        const querySnapshot = await getDocs(confirmados);
+    campo.value = "";
+    alert("Presença confirmada com sucesso!");
 
-        let repetido = false;
+  } catch (erro) {
+    console.error(erro);
+    alert("Não foi possível confirmar. Tente novamente.");
+  } finally {
+    botao.disabled = false;
+  }
 
-        querySnapshot.forEach((item) => {
-            if (item.data().nome.toLowerCase() === nomeVerificar) {
-                repetido = true;
-            }
-        });
-
-        if (repetido) {
-            alert("Esse nome já confirmou presença.");
-            return;
-        }
-
-        await addDoc(confirmados, {
-            nome: nome
-        });
-
-        campo.value = "";
-        alert("Presença confirmada!");
-
-    } catch (erro) {
-        alert("Não foi possível confirmar. Tente novamente.");
-        console.error(erro);
-    }
 };
 
 onSnapshot(confirmados, (snapshot) => {
 
-    const lista = document.getElementById("lista");
-    lista.innerHTML = "";
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
 
-    snapshot.forEach((item) => {
-        const li = document.createElement("li");
-        li.textContent = item.data().nome;
-        lista.appendChild(li);
-    });
+  snapshot.forEach((item) => {
+    const li = document.createElement("li");
+    li.textContent = item.data().nome;
+    lista.appendChild(li);
+  });
 
-}, (erro) => {
-    console.error("Erro ao carregar a lista:", erro);
 });
 
 </script>
