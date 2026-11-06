@@ -84,7 +84,7 @@ ul {
 
 li {
   margin: 8px 0;
-  padding: 10px;
+  padding: 12px;
   background: rgba(30,130,220,0.18);
   border-radius: 10px;
   display: flex;
@@ -93,9 +93,22 @@ li {
   gap: 10px;
 }
 
-.nome-lista {
-  overflow-wrap: anywhere;
+.info-nome {
   text-align: left;
+  min-width: 0;
+}
+
+.nome-lista {
+  display: block;
+  overflow-wrap: anywhere;
+  font-weight: bold;
+}
+
+.horario {
+  display: block;
+  font-size: 11px;
+  opacity: 0.7;
+  margin-top: 5px;
 }
 
 .botao-remover {
@@ -159,7 +172,8 @@ import {
   onSnapshot,
   doc,
   runTransaction,
-  deleteDoc
+  deleteDoc,
+  serverTimestamp
 } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -213,7 +227,10 @@ window.confirmar = async function() {
         throw new Error("NOME_REPETIDO");
       }
 
-      transacao.set(referencia, { nome: nome });
+      transacao.set(referencia, {
+        nome: nome,
+        confirmadoEm: serverTimestamp()
+      });
 
     });
 
@@ -265,19 +282,45 @@ onSnapshot(confirmados, (snapshot) => {
 
   snapshot.forEach((item) => {
 
+    const dados = item.data();
+
     const li = document.createElement("li");
+
+    const info = document.createElement("div");
+    info.className = "info-nome";
 
     const nome = document.createElement("span");
     nome.className = "nome-lista";
-    nome.textContent = item.data().nome;
+    nome.textContent = dados.nome;
 
-    const remover = document.createElement("button");
-    remover.className = "botao-remover";
-    remover.textContent = "Remover";
-    remover.onclick = () => window.remover(item.id);
+    const horario = document.createElement("span");
+    horario.className = "horario";
 
-    li.appendChild(nome);
-    li.appendChild(remover);
+    if (dados.confirmadoEm) {
+      const data = dados.confirmadoEm.toDate();
+
+      horario.textContent = data.toLocaleString("pt-BR", {
+        timeZone: "America/Sao_Paulo",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    } else {
+      horario.textContent = "Confirmação anterior";
+    }
+
+    info.appendChild(nome);
+    info.appendChild(horario);
+
+    const botaoRemover = document.createElement("button");
+    botaoRemover.className = "botao-remover";
+    botaoRemover.textContent = "Remover";
+    botaoRemover.onclick = () => window.remover(item.id);
+
+    li.appendChild(info);
+    li.appendChild(botaoRemover);
 
     lista.appendChild(li);
 
@@ -295,5 +338,4 @@ onSnapshot(confirmados, (snapshot) => {
 </script>
 
 </body>
-  </html>
-  
+</html>
